@@ -65,10 +65,10 @@
 &trackball_listener {
     status = "okay";
     input-processors =<&mouse_runtime_input_processor>,
-        //<&zip_xy_transform INPUT_TRANSFORM_Y_INVERT>;         //Y軸反転
+        //<&zip_xy_transform INPUT_TRANSFORM_Y_INVERT>;       //Y軸反転
         //<&zip_xy_transform INPUT_TRANSFORM_XY_SWAP>,        //X軸とY軸の入れ替え
-        <&zip_xy_transform INPUT_TRANSFORM_X_INVERT>;       //X軸反転
-        //<&zip_temp_layer 2 1000>;                            //オートマウスレイヤーの選択;
+        <&zip_xy_transform INPUT_TRANSFORM_X_INVERT>,       //X軸反転
+        <&zip_temp_layer 2 10000>;                          //オートマウスレイヤー: ボールを動かすとレイヤー2に入り、10秒動かさないと抜ける
 
 
     scroller {
@@ -80,6 +80,15 @@
             <&zip_xy_to_scroll_mapper>,                         //スクロールモードに変更
             <&zip_scroll_transform INPUT_TRANSFORM_X_INVERT>,   //スクロールのX軸反転
             //<&zip_scroll_transform INPUT_TRANSFORM_Y_INVERT>,   //スクロールのY軸反転
-            <&zip_scroll_scaler 1 8>;                           //スクロール量を1/8倍
+            <&zip_scroll_scaler 1 32>;                          //スクロール量を1/32倍（Keyball の KEYBALL_SCROLL_DIV_DEFAULT 6 と同じ）
     };
+};
+
+// オートマウスレイヤー（レイヤー2）の動き方
+&zip_temp_layer {
+    // キーを打ってから 200ms はボールを動かしてもレイヤーに入らない
+    require-prior-idle-ms = <200>;
+    // 次の位置のキーを押してもレイヤーから抜けない。ここにないキーを押すとすぐに抜ける
+    //   7: MB4  9: MB5  19: MB1  20: スクロール(&mo 3)  21: MB2  40: &lt 2 SPACE
+    excluded-positions = <7 9 19 20 21 40>;
 };
