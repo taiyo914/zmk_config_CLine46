@@ -65,7 +65,15 @@ west build -p -s zmk/app -d build/left -b seeeduino_xiao_ble -- \
 - 右手側: `zmk-ws/build/right/zephyr/zmk.uf2`
 - 左手側: `zmk-ws/build/left/zephyr/zmk.uf2`
 
-キーマップ（`zmk-config/config/CLine46.keymap`）だけを変更した場合は、右手側だけをビルドして書き込めば反映されます。
+キーマップ（`CLine46.keymap`）や右手の設定（`Cline46_R.overlay`）だけを変更した場合は、右手側だけをビルドして書き込めば反映されます。
+
+次のものを変更したときは、左手側もビルドして書き込んでください。
+
+- 左手側だけの設定ファイル（`CLine46_L.conf`、`CLine46_L.overlay`）
+- 左右で共通のハードウェアの設定（`CLine46.dtsi`）
+- ZMK 本体やモジュールのバージョン（`config/west.yml`）
+
+また、リセットしたいときは `settings_reset` を両方に書き込み、そのあとで左右両方にファームウェアを書き込み直します。
 
 ### 3. 書き込み
 

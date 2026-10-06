@@ -25,13 +25,6 @@
 
 / {
     macros {
-        to_layer_0: to_layer_0 {
-            compatible = "zmk,behavior-macro-one-param";
-            #binding-cells = <1>;
-            bindings = <&to 0 &macro_param_1to1 &kp MACRO_PLACEHOLDER>;
-            label = "TO_LAYER_0";
-        };
-
         // Shift で送る文字を変えるための macro 
         // 先に Shift を外してから、引数のキーを送る
         // 同時に送ると、PC が Shift ありの文字を入力することがある
@@ -53,16 +46,7 @@
     };
 
     behaviors {
-        lt_to_layer_0: lt_to_layer_0 {
-            compatible = "zmk,behavior-hold-tap";
-            label = "LAYER_TAP_TO_0";
-            bindings = <&mo>, <&to_layer_0>;
-
-            #binding-cells = <2>;
-            tapping-term-ms = <200>;
-        };
-
-        // 以下は Shift の有無で送る文字を変えるキー。Shift ありのときは Shift を外して送る
+        // Shift の有無で送る文字を変えるキー。Shift ありのときは Shift を外して送る
 
         semi_colon: semi_colon {
             compatible = "zmk,behavior-mod-morph";
@@ -70,33 +54,25 @@
             bindings = <&kp COLON>, <&unshifted SEMI>;    // 単押し ':' / Shift ';'
             mods = <(MOD_LSFT|MOD_RSFT)>;
         };
+    };
 
-        pipe_bslh: pipe_bslh {
-            compatible = "zmk,behavior-mod-morph";
-            #binding-cells = <0>;
-            bindings = <&kp PIPE>, <&unshifted BSLH>;     // 単押し '|' / Shift '\'
-            mods = <(MOD_LSFT|MOD_RSFT)>;
+    combos {
+        compatible = "zmk,combos";
+
+        // Tab と Q を同時に押すと Esc
+        combo_esc {
+            timeout-ms = <50>;
+            key-positions = <0 1>;
+            bindings = <&kp ESC>;
+            layers = <0>;
         };
 
-        plus_equal: plus_equal {
-            compatible = "zmk,behavior-mod-morph";
-            #binding-cells = <0>;
-            bindings = <&kp PLUS>, <&unshifted EQUAL>;     // 単押し '+' / Shift '='
-            mods = <(MOD_LSFT|MOD_RSFT)>;
-        };
-
-        lbkt_lpar: lbkt_lpar {
-            compatible = "zmk,behavior-mod-morph";
-            #binding-cells = <0>;
-            bindings = <&kp LBKT>, <&kp LPAR>;            // 単押し '[' / Shift '('
-            mods = <(MOD_LSFT|MOD_RSFT)>;
-        };
-
-        rbkt_rpar: rbkt_rpar {
-            compatible = "zmk,behavior-mod-morph";
-            #binding-cells = <0>;
-            bindings = <&kp RBKT>, <&kp RPAR>;           // 単押し ']' / Shift ')'
-            mods = <(MOD_LSFT|MOD_RSFT)>;
+        // 左親指の Space とその右隣を同時に押している間、レイヤー5（設定）に入る
+        combo_settings {
+            timeout-ms = <50>;
+            key-positions = <40 41>;
+            bindings = <&mo 5>;
+            layers = <0>;
         };
     };
 
@@ -106,70 +82,82 @@
         // 文字入力
         layer_0 {
             bindings = <
-&kp TAB      &kp Q       &kp W        &kp E      &kp R            &kp T                                               &kp Y             &kp U         &kp I       &kp O     &kp P       &kp BSPC
-&kp LCTRL    &kp A       &kp S        &kp D      &kp F            &kp G                                               &kp H             &kp J         &kp K       &kp L     &kp MINUS   &kp RET
-&kp LSHIFT   &kp Z       &kp X        &kp C      &kp V            &kp B                                               &kp N             &kp M         &kp COMMA   &kp DOT   &kp SLASH   &kp RSHIFT
-             &kp ESCAPE  &kp RSHIFT   &kp LALT   &mt LGUI LANG2   &lt 2 SPACE   &lt 3 SPACE      &mt RGUI LANG1   &lt 1 LANG1                                         &kp RALT    &kp HOME
+&kp TAB      &kp Q       &kp W     &kp E      &kp R            &kp T                                    &kp Y             &kp U   &kp I       &kp O     &kp P          &kp BSPC
+&mo 4        &kp A       &kp S     &kp D      &kp F            &kp G                                    &kp H             &kp J   &kp K       &kp L     &kp MINUS      &kp RET
+&kp LSHIFT   &kp Z       &kp X     &kp C      &kp V            &kp B                                    &kp N             &kp M   &kp COMMA   &kp DOT   &kp SLASH      &kp RSHIFT
+             &kp LCTRL   &none     &kp LALT   &mt LGUI LANG2   &lt 1 SPACE   &mo 2      &mo 3           &mt RGUI LANG1                                  &kp C_VOL_DN   &kp C_VOL_UP
             >;
         };
 
-        // 数字と記号
+        // 数字
         layer_1 {
             bindings = <
-&trans   &kp N6     &kp N7      &kp N8     &kp N9        &kp N0                                &kp AT        &lbkt_lpar    &rbkt_rpar   &kp LBRC      &kp RBRC    &trans
-&trans   &kp N1     &kp N2      &kp N3     &kp N4        &kp N5                                &kp HASH      &kp GRAVE     &kp ASTRK    &kp GT        &kp MINUS   &trans
-&trans   &kp DLLR   &kp CARET   &kp AMPS   &kp PLUS      &kp PRCNT                             &kp SQT       &semi_colon   &pipe_bslh   &plus_equal   &kp EXCL    &trans
-         &trans     &trans      &trans     &trans        &trans      &trans      &trans        &trans                                                  &trans      &trans
+&trans   &trans   &trans   &trans   &trans   &trans                        &kp N0      &kp N1   &kp N2   &kp N3   &trans   &trans
+&trans   &trans   &trans   &trans   &trans   &trans                        &kp PLUS    &kp N4   &kp N5   &kp N6   &trans   &trans
+&trans   &trans   &trans   &trans   &trans   &trans                        &kp ASTRK   &kp N7   &kp N8   &kp N9   &trans   &trans
+         &trans   &trans   &trans   &trans   &trans   &trans      &trans   &trans                                 &trans   &trans
             >;
         };
 
-        // カーソルとマウス（オートマウスレイヤー）
+        // マウス（オートマウスレイヤー）
         layer_2 {
             bindings = <
-&trans   &kp LS(LEFT)   &kp LA(LEFT)   &kp UP     &kp LA(RIGHT)   &kp LS(RIGHT)                         &trans      &mkp MB4   &trans    &mkp MB5   &trans   &trans
-&trans   &kp LG(LEFT)   &kp LEFT       &kp DOWN   &kp RIGHT       &kp LG(RIGHT)                         &kp BSPC    &mkp MB1   &mo 3     &mkp MB2   &trans   &trans
-&trans   &trans         &trans         &trans     &trans          &trans                                &trans      &trans     &trans    &trans     &trans   &trans
-         &trans         &trans         &trans     &trans          &trans          &trans      &trans    &trans                                      &trans   &trans
+&trans   &trans   &trans   &trans   &trans   &trans                        &trans   &mkp MB4   &trans   &mkp MB5   &trans   &trans
+&trans   &trans   &trans   &trans   &trans   &trans                        &trans   &mkp MB1   &mo 6    &mkp MB2   &trans   &trans
+&trans   &trans   &trans   &trans   &trans   &trans                        &trans   &trans     &trans   &trans     &trans   &trans
+         &trans   &trans   &trans   &trans   &trans   &trans      &trans   &trans                                  &trans   &trans
             >;
         };
 
-        // スクロール・Bluetooth デバイスの切り替え・ZMK Studio のロック解除
+        // 記号
+        // 英語の呼び名の頭文字などで位置を決めている
+        //   Q ' quote         W " w-quote    E = equal      R ^ raised to the power of   T ~ tilde
+        //   A @ at            S * star       D $ dollar     G ` grave
+        //   X ! eXclamation   C : colon      V | vertical   B \ backslash
+        //   H # hash          N & 'n (and)   L + large      P % percent
         layer_3 {
             bindings = <
-&bt BT_CLR       &trans   &trans         &trans         &trans         &trans                                &trans   &trans   &trans   &trans   &trans   &trans
-&bt BT_CLR_ALL   &trans   &bt BT_SEL 4   &trans         &trans         &trans                                &trans   &trans   &trans   &trans   &trans   &trans
-&trans           &trans   &bt BT_SEL 1   &bt BT_SEL 2   &bt BT_SEL 3   &trans                                &trans   &trans   &trans   &trans   &trans   &trans
-                 &trans   &bt BT_SEL 0   &trans         &trans         &trans   &trans      &studio_unlock   &trans                     &trans   &trans  
+&trans   &kp SQT   &kp DQT     &kp EQUAL     &kp CARET   &kp TILDE                        &trans      &kp LPAR   &kp RPAR   &trans     &kp PRCNT   &trans
+&trans   &kp AT    &kp ASTRK   &kp DLLR      &trans      &kp GRAVE                        &kp HASH    &kp LBKT   &kp RBKT   &kp PLUS   &trans      &trans
+&trans   &trans    &kp EXCL    &semi_colon   &kp PIPE    &kp BSLH                         &kp AMPS    &trans     &trans     &trans     &trans      &trans
+         &trans    &trans      &trans        &trans      &trans      &trans      &trans   &trans                                       &trans      &trans
             >;
         };
 
-
+        // 移動とショートカット
+        //   右手: 矢印キーと削除
+        //   左手: A と S はスクリーンショット、D はブラウザの開発者ツール、C は Ctrl+C
+        //   右下の2キー: 画面の明るさ
         layer_4 {
             bindings = <
-&trans   &trans   &trans         &trans         &trans         &trans                        &trans   &trans   &trans   &trans   &trans   &trans
-&trans   &trans   &bt BT_SEL 4   &trans         &trans         &trans                        &trans   &trans   &trans   &trans   &trans   &trans
-&trans   &trans   &bt BT_SEL 1   &bt BT_SEL 2   &bt BT_SEL 3   &trans                        &trans   &trans   &trans   &trans   &trans   &trans
-         &trans   &bt BT_SEL 0   &trans         &trans         &trans   &trans      &trans   &trans                     &trans   &trans 
+&trans   &trans           &trans               &trans          &trans   &trans                        &kp LG(LEFT)   &kp LA(LEFT)   &kp UP     &kp LA(RIGHT)   &kp LG(RIGHT)   &trans
+&trans   &kp LG(LS(N2))   &kp LG(LS(LC(N4)))   &kp LG(LA(I))   &trans   &trans                        &kp BSPC       &kp LEFT       &kp DOWN   &kp RIGHT       &kp DEL         &trans
+&trans   &trans           &trans               &kp LC(C)       &trans   &trans                        &kp LG(BSPC)   &kp LA(BSPC)   &trans     &kp LA(DEL)     &kp LG(DEL)     &trans
+         &trans           &trans               &trans          &trans   &trans   &trans      &trans   &trans                                                   &kp C_BRI_DN    &kp C_BRI_UP
             >;
         };
 
-
+        // 設定
+        //   上段: Bluetooth の接続先の切り替え  
+        //   中段: 接続先との切断
+        //   右下の2キー: ペアリングの削除
+        //   右親指: ZMK Studio のロック解除
         layer_5 {
             bindings = <
-&trans   &trans   &trans   &trans   &trans   &trans                        &trans   &trans   &trans   &trans   &trans   &trans
-&trans   &trans   &trans   &trans   &trans   &trans                        &trans   &trans   &trans   &trans   &trans   &trans
-&trans   &trans   &trans   &trans   &trans   &trans                        &trans   &trans   &trans   &trans   &trans   &trans
-         &trans   &trans   &trans   &trans   &trans   &trans      &trans   &trans                     &trans   &trans       
+&trans   &trans   &trans   &trans   &trans   &trans                        &bt BT_SEL 0     &bt BT_SEL 1    &bt BT_SEL 2    &bt BT_SEL 3    &bt BT_SEL 4    &trans
+&trans   &trans   &trans   &trans   &trans   &trans                        &bt BT_DISC 0    &bt BT_DISC 1   &bt BT_DISC 2   &bt BT_DISC 3   &bt BT_DISC 4   &trans
+&trans   &trans   &trans   &trans   &trans   &trans                        &trans           &trans          &trans          &trans          &trans          &trans
+         &trans   &trans   &trans   &trans   &trans   &trans      &trans   &studio_unlock                                                   &bt BT_CLR      &bt BT_CLR_ALL
             >;
         };
 
-
+        // スクロール
         layer_6 {
             bindings = <
 &trans   &trans   &trans   &trans   &trans   &trans                        &trans   &trans   &trans   &trans   &trans   &trans
 &trans   &trans   &trans   &trans   &trans   &trans                        &trans   &trans   &trans   &trans   &trans   &trans
 &trans   &trans   &trans   &trans   &trans   &trans                        &trans   &trans   &trans   &trans   &trans   &trans
-         &trans   &trans   &trans   &trans   &trans   &trans      &trans   &trans                     &trans   &trans 
+         &trans   &trans   &trans   &trans   &trans   &trans      &trans   &trans                     &trans   &trans
             >;
         };
     };
