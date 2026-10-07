@@ -23,6 +23,12 @@
     quick-tap-ms = <200>;
 };
 
+// 1回押して離すと、次の1キーにだけ効く修飾キー
+// - 次のキーを押した時点で修飾キーを離す。速く打っても2文字目には効かない
+&sk {
+    quick-release;
+};
+
 / {
     macros {
         // Shift で送る文字を変えるための macro 
@@ -67,11 +73,11 @@
             layers = <0>;
         };
 
-        // 左親指の Space とその右隣を同時に押している間、レイヤー5（設定）に入る
+        // 左親指の Space とその右隣を同時に押している間、レイヤー4（設定）に入る
         combo_settings {
             timeout-ms = <50>;
             key-positions = <40 41>;
-            bindings = <&mo 5>;
+            bindings = <&mo 4>;
             layers = <0>;
         };
     };
@@ -82,10 +88,10 @@
         // 文字入力
         layer_0 {
             bindings = <
-&kp TAB      &kp Q       &kp W     &kp E      &kp R            &kp T                                    &kp Y             &kp U   &kp I       &kp O     &kp P          &kp BSPC
-&mo 4        &kp A       &kp S     &kp D      &kp F            &kp G                                    &kp H             &kp J   &kp K       &kp L     &kp MINUS      &kp RET
-&kp LSHIFT   &kp Z       &kp X     &kp C      &kp V            &kp B                                    &kp N             &kp M   &kp COMMA   &kp DOT   &kp SLASH      &kp RSHIFT
-             &kp LCTRL   &none     &kp LALT   &mt LGUI LANG2   &lt 1 SPACE   &mo 2      &mo 3           &mt RGUI LANG1                                  &kp C_VOL_DN   &kp C_VOL_UP
+&kp TAB      &kp Q       &kp W        &kp E      &kp R            &kp T                                    &kp Y             &kp U   &kp I       &kp O     &kp P          &kp BSPC
+&mo 3        &kp A       &kp S        &kp D      &kp F            &kp G                                    &kp H             &kp J   &kp K       &kp L     &kp MINUS      &kp RET
+&kp LSHIFT   &kp Z       &kp X        &kp C      &kp V            &kp B                                    &kp N             &kp M   &kp COMMA   &kp DOT   &kp SLASH      &kp RSHIFT
+             &kp LCTRL   &kp ESC      &kp LALT   &mt LGUI LANG2   &lt 1 SPACE   &sk LSHIFT      &mo 2      &mt RGUI LANG1                                  &kp C_VOL_DN   &kp C_VOL_UP
             >;
         };
 
@@ -99,23 +105,13 @@
             >;
         };
 
-        // マウス（オートマウスレイヤー）
-        layer_2 {
-            bindings = <
-&trans   &trans   &trans   &trans   &trans   &trans                        &trans   &mkp MB4   &trans   &mkp MB5   &trans   &trans
-&trans   &trans   &trans   &trans   &trans   &trans                        &trans   &mkp MB1   &mo 6    &mkp MB2   &trans   &trans
-&trans   &trans   &trans   &trans   &trans   &trans                        &trans   &trans     &trans   &trans     &trans   &trans
-         &trans   &trans   &trans   &trans   &trans   &trans      &trans   &trans                                  &trans   &trans
-            >;
-        };
-
         // 記号
         // 英語の呼び名の頭文字などで位置を決めている
         //   Q ' quote         W " w-quote    E = equal      R ^ raised to the power of   T ~ tilde
         //   A @ at            S * star       D $ dollar     G ` grave
         //   X ! eXclamation   C : colon      V | vertical   B \ backslash
         //   H # hash          N & 'n (and)   L + large      P % percent
-        layer_3 {
+        layer_2 {
             bindings = <
 &trans   &kp SQT   &kp DQT     &kp EQUAL     &kp CARET   &kp TILDE                        &trans      &kp LPAR   &kp RPAR   &trans     &kp PRCNT   &trans
 &trans   &kp AT    &kp ASTRK   &kp DLLR      &trans      &kp GRAVE                        &kp HASH    &kp LBKT   &kp RBKT   &kp PLUS   &trans      &trans
@@ -126,14 +122,15 @@
 
         // 移動とショートカット
         //   右手: 矢印キーと削除
-        //   左手: A と S はスクリーンショット、D はブラウザの開発者ツール、C は Ctrl+C
+        //   左手: A と S はスクリーンショット、D はブラウザの開発者ツール
+        //   上の指定がない文字キーと Tab / Backspace / Enter: Ctrl + そのキー
         //   右下の2キー: 画面の明るさ
-        layer_4 {
+        layer_3 {
             bindings = <
-&trans   &trans           &trans               &trans          &trans   &trans                        &kp LG(LEFT)   &kp LA(LEFT)   &kp UP     &kp LA(RIGHT)   &kp LG(RIGHT)   &trans
-&trans   &kp LG(LS(N2))   &kp LG(LS(LC(N4)))   &kp LG(LA(I))   &trans   &trans                        &kp BSPC       &kp LEFT       &kp DOWN   &kp RIGHT       &kp DEL         &trans
-&trans   &trans           &trans               &kp LC(C)       &trans   &trans                        &kp LG(BSPC)   &kp LA(BSPC)   &trans     &kp LA(DEL)     &kp LG(DEL)     &trans
-         &trans           &trans               &trans          &trans   &trans   &trans      &trans   &trans                                                   &kp C_BRI_DN    &kp C_BRI_UP
+&kp LC(TAB)   &kp LC(Q)        &kp LC(W)            &kp LC(E)       &kp LC(R)   &kp LC(T)                        &kp LG(LEFT)   &kp LA(LEFT)   &kp UP          &kp LA(RIGHT)   &kp LG(RIGHT)   &kp LC(BSPC)
+&trans        &kp LG(LS(N2))   &kp LG(LS(LC(N4)))   &kp LG(LA(I))   &kp LC(F)   &kp LC(G)                        &kp BSPC       &kp LEFT       &kp DOWN        &kp RIGHT       &kp DEL         &kp LC(RET)
+&trans        &kp LC(Z)        &kp LC(X)            &kp LC(C)       &kp LC(V)   &kp LC(B)                        &kp LG(BSPC)   &kp LA(BSPC)   &kp LC(COMMA)   &kp LA(DEL)     &kp LG(DEL)     &trans
+              &trans           &trans               &trans          &trans      &trans      &trans      &trans   &trans                                                         &kp C_BRI_DN    &kp C_BRI_UP
             >;
         };
 
@@ -142,12 +139,22 @@
         //   中段: 接続先との切断
         //   右下の2キー: ペアリングの削除
         //   右親指: ZMK Studio のロック解除
-        layer_5 {
+        layer_4 {
             bindings = <
 &trans   &trans   &trans   &trans   &trans   &trans                        &bt BT_SEL 0     &bt BT_SEL 1    &bt BT_SEL 2    &bt BT_SEL 3    &bt BT_SEL 4    &trans
 &trans   &trans   &trans   &trans   &trans   &trans                        &bt BT_DISC 0    &bt BT_DISC 1   &bt BT_DISC 2   &bt BT_DISC 3   &bt BT_DISC 4   &trans
 &trans   &trans   &trans   &trans   &trans   &trans                        &trans           &trans          &trans          &trans          &trans          &trans
          &trans   &trans   &trans   &trans   &trans   &trans      &trans   &studio_unlock                                                   &bt BT_CLR      &bt BT_CLR_ALL
+            >;
+        };
+
+        // マウス（オートマウスレイヤー）
+        layer_5 {
+            bindings = <
+&trans   &trans   &trans   &trans   &trans   &trans                        &trans   &mkp MB4   &trans   &mkp MB5   &trans   &trans
+&trans   &trans   &trans   &trans   &trans   &trans                        &trans   &mkp MB1   &mo 6    &mkp MB2   &trans   &trans
+&trans   &trans   &trans   &trans   &trans   &trans                        &trans   &trans     &trans   &trans     &trans   &trans
+         &trans   &trans   &trans   &trans   &trans   &trans      &trans   &trans                                  &trans   &trans
             >;
         };
 
