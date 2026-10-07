@@ -4,7 +4,7 @@ CLine46 の ZMK ファームウェアの設定です。
 
 ## ローカルでビルドする
 
-GitHub Actions を使わずに、手元の PC で Docker を使ってビルドする手順です。Docker が使える状態になっている必要があります。
+GitHub Actions を使わずに、手元の PC でビルドする手順です。Docker が使える状態になっている必要があります。
 
 ### 1. 準備
 
@@ -45,19 +45,18 @@ west update
 
 ### 2. ビルド
 
-`cline46` フォルダに移動し、上と同じ `docker run` のコマンドでコンテナを起動して、コンテナの中で次のコマンドを実行します。
+`zmk-config` フォルダに移動します。
 
 ```bash
-# コンテナを起動するたびに1回実行する
-west zephyr-export
+cd zmk-config
+```
 
-# 右手側
-west build -p -s zmk/app -d build/right -b seeeduino_xiao_ble -S studio-rpc-usb-uart -- \
-  -DSHIELD="CLine46_R rgbled_adapter" -DZMK_CONFIG=/zmk-ws/config -DZMK_EXTRA_MODULES=/cline46
+次のコマンドで、コンテナの起動からビルドまでをまとめて行います。
 
-# 左手側
-west build -p -s zmk/app -d build/left -b seeeduino_xiao_ble -- \
-  -DSHIELD="CLine46_L rgbled_adapter" -DZMK_CONFIG=/zmk-ws/config -DZMK_EXTRA_MODULES=/cline46
+```bash
+make build-right  # 右手側
+make build-left   # 左手側
+make build-both   # 左右両方
 ```
 
 ビルドしたファームウェアは次の場所にできます。
@@ -65,32 +64,40 @@ west build -p -s zmk/app -d build/left -b seeeduino_xiao_ble -- \
 - 右手側: `zmk-ws/build/right/zephyr/zmk.uf2`
 - 左手側: `zmk-ws/build/left/zephyr/zmk.uf2`
 
-キーマップ（`CLine46.keymap`）や右手の設定（`Cline46_R.overlay`）だけを変更した場合は、右手側だけをビルドして書き込めば反映されます。
+`CLine46.keymap` や右手の設定ファイルのみを変更した場合は、右手側だけをビルドして書き込めば反映されます。
 
-次のものを変更したときは、左手側もビルドして書き込んでください。
-
-- 左手側だけの設定ファイル（`CLine46_L.conf`、`CLine46_L.overlay`）
-- 左右で共通のハードウェアの設定（`CLine46.dtsi`）
-- ZMK 本体やモジュールのバージョン（`config/west.yml`）
+左手の設定ファイルや `config/west.yml` などを変更したときは、左手側もビルドして書き込んでください。
 
 また、リセットしたいときは `settings_reset` を両方に書き込み、そのあとで左右両方にファームウェアを書き込み直します。
 
 ### 3. 書き込み
 
-1. 電源スイッチを OFF にして、書き込む側を USB ケーブルで PC につなぐ
-2. XIAO（マイコン）のリセットボタンをすばやく2回押す（`XIAO-SENSE` というドライブが表示される）
-3. `zmk.uf2` を `XIAO-SENSE` ドライブにコピーする
+1. 書き込む側を USB ケーブルで PC につなぐ
+2. `zmk-config` フォルダで書き込む側のコマンドを実行する
 
-macOS の場合は、`cline46` フォルダで次のコマンドを実行するとコピーできます。
+    ```bash
+    make flash-right  # 右手側
+    make flash-left   # 左手側
+    ```
+
+3. コマンドが `XIAO-SENSE` ドライブが表示されるのを待つので、書き込む側で次のどちらかの操作をする
+    - `&bootloader` キーを押す
+    - XIAO（マイコン）のリセットボタンをすばやく2回押す
+4. `XIAO-SENSE` ドライブが表示されると、コマンドが `zmk.uf2` をドライブにコピーする
+
+コピーが終わると XIAO が自動で再起動し、ドライブが取り外されます。電源を入れると新しいファームウェアが反映されています。
+
+`&bootloader` キーが入っていないファームウェアを使っているときは、リセットボタンを使ってください。
+
+### 4. ビルドと書き込みを続けて行う
+
+`zmk-config` フォルダで次のコマンドを実行すると、ビルドが成功したあと、そのまま「3. 書き込み」の手順 3 に進みます。
 
 ```bash
-# 右手側
-cp zmk-ws/build/right/zephyr/zmk.uf2 /Volumes/XIAO-SENSE/
-
-# 左手側
-cp zmk-ws/build/left/zephyr/zmk.uf2 /Volumes/XIAO-SENSE/
+make build-flash-right  # 右手側
+make build-flash-left   # 左手側
 ```
 
-コピーが終わると XIAO が自動で再起動し、ディスクが取り外されます。
+### 5. コマンドの一覧
 
-電源を入れると新しいファームウェアが反映されいます。
+`make help` を実行すると、使えるコマンドの一覧が表示されます。
