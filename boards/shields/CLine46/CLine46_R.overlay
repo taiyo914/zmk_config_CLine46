@@ -73,7 +73,8 @@
 
     scroller {
         layers = <5>;
-        input-processors = 
+        input-processors =
+            <&zip_temp_layer 4 10000>,                          //ボールでスクロールしている間も、レイヤー4の残り時間を10秒に戻す
             // <&zip_xy_transform INPUT_TRANSFORM_XY_SWAP>,        //X軸とY軸の入れ替え
             // <&zip_xy_transform INPUT_TRANSFORM_X_INVERT>,       //X軸反転
             <&zip_xy_transform INPUT_TRANSFORM_Y_INVERT>,       //Y軸反転
@@ -89,6 +90,7 @@
     // キーを打ってから 200ms はボールを動かしてもレイヤーに入らない
     require-prior-idle-ms = <200>;
     // 次の位置のキーを押してもレイヤーから抜けない。ここにないキーを押すとすぐに抜ける
-    //   7: MB4  9: MB5  19: MB1  20: スクロール(&mo 5)  21: MB2
-    excluded-positions = <7 9 19 20 21>;
+    //   7: MB4  8: スクロール(I)  9: MB5  19: MB1  20: スクロール(K)  21: MB2
+    //   32: ボールでスクロール(&mo 5)
+    excluded-positions = <7 8 9 19 20 21 32>;
 };
