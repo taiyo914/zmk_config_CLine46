@@ -30,7 +30,7 @@ endef
 define flash
 @test -f "$(WS_DIR)/build/$(1)/zephyr/zmk.uf2" || { echo "zmk.uf2 がありません。先に make build-$(1) を実行してください"; exit 1; }
 @echo "$(DRIVE) が表示されるのを待っています。書き込むデバイスで &bootloader キーを押すか、リセットボタンをすばやく2回押してください。Ctrl+C で中止できます。"
-@until [ -d "$(DRIVE)" ]; do sleep 1; done
+@until [ -f "$(DRIVE)/INFO_UF2.TXT" ]; do sleep 1; done
 cp -X "$(WS_DIR)/build/$(1)/zephyr/zmk.uf2" "$(DRIVE)/"
 @echo "書き込みました: build/$(1)/zephyr/zmk.uf2"
 endef
