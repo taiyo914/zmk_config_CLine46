@@ -9,7 +9,14 @@ IMAGE := zmkfirmware/zmk-build-arm:stable
 BOARD := seeeduino_xiao_ble
 DRIVE := /Volumes/XIAO-SENSE
 
-# Docker のコンテナの中でビルドする
+# ビルドが終わって書き込める状態になったことを、macOS の通知と音で知らせる
+# terminal-notifier が入っていないときは何もしない
+#   $(1): 通知に表示する文
+define notify
+@command -v terminal-notifier >/dev/null && terminal-notifier -title "CLine46" -message "$(1)" -sound default >/dev/null || true
+endef
+
+# Docker のコンテナの中でビルドして、成功したら通知する
 #   $(1): ビルド先のフォルダ名（right/left/reset）
 #   $(2): シールド名（複数あるときは空白で区切る）
 #   $(3): west build に追加で渡すオプション
@@ -23,6 +30,7 @@ docker run --rm \
 		west build -p -s zmk/app -d build/$(1) -b $(BOARD) $(3) -- \
 			-DSHIELD="$(2)" -DZMK_CONFIG=/zmk-ws/config -DZMK_EXTRA_MODULES=/cline46'
 @echo "ビルドしたファイル: $(WS_DIR)/build/$(1)/zephyr/zmk.uf2"
+$(call notify,$(1) のビルドが終わりました)
 endef
 
 # XIAO-SENSE ドライブが表示されるまで待ってから、ビルドしたファイルをコピーする（macOS 専用）
