@@ -21,6 +21,8 @@
 #define SCROLL_TAP_COUNT_PER_SEC (1000 / (16 * SCROLL_TAP_INTERVAL) + 1)
 #define SCROLL_KEY_UP     &scroll_key MOVE_Y(SCROLL_HOLD_COUNT_PER_SEC) MOVE_Y(SCROLL_TAP_COUNT_PER_SEC)
 #define SCROLL_KEY_DOWN   &scroll_key MOVE_Y(-SCROLL_HOLD_COUNT_PER_SEC) MOVE_Y(-SCROLL_TAP_COUNT_PER_SEC)
+#define SCROLL_KEY_RIGHT  &scroll_key MOVE_X(SCROLL_HOLD_COUNT_PER_SEC) MOVE_X(SCROLL_TAP_COUNT_PER_SEC)
+#define SCROLL_KEY_LEFT   &scroll_key MOVE_X(-SCROLL_HOLD_COUNT_PER_SEC) MOVE_X(-SCROLL_TAP_COUNT_PER_SEC)
 
 // タップとホールドの判定
 // - 200ms 以上押したときにホールドになる
@@ -98,6 +100,17 @@
             bindings = <&msc>, <&scroll_tap>;
         };
 
+        // Ctrl キー。単押しで Esc、ホールドで Ctrl
+        // - 200ms 以内に離すとタップ、別のキーを押した時点でホールドになる
+
+        ctrl_esc: ctrl_esc {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "hold-preferred";
+            tapping-term-ms = <200>;
+            bindings = <&kp>, <&kp>;
+        };
+
         // Shift の有無で送る文字を変えるキー。Shift ありのときは Shift を外して送る
 
         semi_colon: semi_colon {
@@ -111,20 +124,20 @@
     combos {
         compatible = "zmk,combos";
 
-        // Tab と Q を同時に押すと Esc
-        combo_esc {
-            timeout-ms = <50>;
-            key-positions = <0 1>;
-            bindings = <&kp ESC>;
-            layers = <0>;
-        };
-
         // 左親指の Space とその右隣を同時に押している間、レイヤー3（設定）に入る
         combo_settings {
             timeout-ms = <50>;
             key-positions = <40 41>;
             bindings = <&mo 3>;
             layers = <0>;
+        };
+
+        // マウスレイヤーで J と K を同時に押している間、レイヤー5（スクロール）に入る
+        combo_scroll {
+            timeout-ms = <50>;
+            key-positions = <19 20>;
+            bindings = <&mo 5>;
+            layers = <4>;
         };
     };
 
@@ -134,10 +147,10 @@
         // 文字入力
         layer_0 {
             bindings = <
-&kp TAB      &kp Q       &kp W        &kp E      &kp R            &kp T                                    &kp Y             &kp U   &kp I       &kp O     &kp P          &kp BSPC
-&kp LCTRL    &kp A       &kp S        &kp D      &kp F            &kp G                                    &kp H             &kp J   &kp K       &kp L     &kp MINUS      &kp RET
-&kp LSHIFT   &kp Z       &kp X        &kp C      &kp V            &kp B                                    &kp N             &kp M   &kp COMMA   &kp DOT   &kp SLASH      &kp RSHIFT
-             &kp LCTRL   &kp ESC      &kp LALT   &mt LGUI LANG2   &lt 1 SPACE   &sk LSHIFT      &kp RGUI   &lt 2 LANG1                                     &kp C_VOL_DN   &kp C_VOL_UP
+&kp TAB               &kp Q       &kp W       &kp E      &kp R            &kp T                                    &kp Y             &kp U   &kp I       &kp O     &kp P          &kp BSPC
+&ctrl_esc LCTRL ESC   &kp A       &kp S       &kp D      &kp F            &kp G                                    &kp H             &kp J   &kp K       &kp L     &kp MINUS      &kp RET
+&kp LSHIFT            &kp Z       &kp X       &kp C      &kp V            &kp B                                    &kp N             &kp M   &kp COMMA   &kp DOT   &kp SLASH      &kp RSHIFT
+                      &kp ESC     &trans      &kp LALT   &mt LGUI LANG2   &lt 1 SPACE   &sk LSHIFT      &kp RGUI   &lt 2 LANG1                                     &kp C_VOL_DN   &kp C_VOL_UP
             >;
         };
 
@@ -187,14 +200,17 @@
 
         // マウス（オートマウスレイヤー）
         //   I: 画面が下にスクロール  K: 画面が上にスクロール
+        //   U: 画面が右にスクロール  O: 画面が左にスクロール
         //      ※ Mac の「ナチュラルなスクロール」を有効にしていると、スクロール方向と移動する向きが逆になる
-        //   ,: 押している間スクロールレイヤー（layer_5）に入る
+        //   H: 戻る  -: 進む
+        //   J: 左クリック  L: 右クリック
+        //   J と K の同時押し: 押している間スクロールレイヤー（layer_5）に入る（combos で設定）
         layer_4 {
             bindings = <
-&trans   &trans   &trans   &trans   &trans   &trans                        &trans   &mkp MB4   SCROLL_KEY_DOWN   &mkp MB5   &trans   &trans
-&trans   &trans   &trans   &trans   &trans   &trans                        &trans   &mkp MB1   SCROLL_KEY_UP     &mkp MB2   &trans   &trans
-&trans   &trans   &trans   &trans   &trans   &trans                        &trans   &trans     &mo 5             &trans     &trans   &trans
-         &trans   &trans   &trans   &trans   &trans   &trans      &trans   &trans                                         &trans   &trans
+&trans   &trans   &trans   &trans   &trans   &trans                        &trans     SCROLL_KEY_RIGHT   SCROLL_KEY_DOWN   SCROLL_KEY_LEFT   &trans     &trans
+&trans   &trans   &trans   &trans   &trans   &trans                        &mkp MB4   &mkp MB1           SCROLL_KEY_UP     &mkp MB2          &mkp MB5   &trans
+&trans   &trans   &trans   &trans   &trans   &trans                        &trans     &trans             &trans            &trans            &trans     &trans
+         &trans   &trans   &trans   &trans   &trans   &trans      &trans   &trans                                                            &trans   &trans
             >;
         };
 
