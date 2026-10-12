@@ -53,7 +53,7 @@
         reg = <0>;
         spi-max-frequency = <2000000>;
         irq-gpios = <&xiao_d 8 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
-        cpi = <600>;
+        cpi = <600>; // 基本的には下の input_processor で設定する
         //swap-xy;
         evt-type = <INPUT_EV_REL>;
         x-input-code = <INPUT_REL_X>;
@@ -92,6 +92,15 @@
     // 次の位置のキーを押してもレイヤーから抜けない。ここにないキーを押すとすぐに抜ける
     //   7: 右スクロール(U)  8: 下スクロール(I)  9: 左スクロール(O)
     //   18: 戻る(H)  19: クリック(J)  20: 上スクロール(K)  21: 右クリック(L)  22: 進む(-)
+    //   31: コピー(M)  32: ペースト(,)
     //   19 と 20 の同時押し: トラックボールでスクロール(&mo 5)
-    excluded-positions = <7 8 9 18 19 20 21 22>;
+    excluded-positions = <7 8 9 18 19 20 21 22 31 32>;
+};
+
+// トラックボールのカーソルの速さ
+// - カーソルの移動量は「元の移動量（cpi) × scale-multiplier ÷ scale-divisor」になる（例: 6 と 5 で 1.2倍）
+// - 注意: DYA Studio などで速さを変更したことがあると、キーボードに保存された値がここの値より優先される
+&mouse_runtime_input_processor {
+    scale-multiplier = <23>;
+    scale-divisor = <10>;
 };

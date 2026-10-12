@@ -204,12 +204,13 @@
         //      ※ Mac の「ナチュラルなスクロール」を有効にしていると、スクロール方向と移動する向きが逆になる
         //   H: 戻る  -: 進む
         //   J: 左クリック  L: 右クリック
+        //   M: コピー（Cmd+C）  ,: ペースト（Cmd+V）
         //   J と K の同時押し: 押している間スクロールレイヤー（layer_5）に入る（combos で設定）
         layer_4 {
             bindings = <
 &trans   &trans   &trans   &trans   &trans   &trans                        &trans     SCROLL_KEY_RIGHT   SCROLL_KEY_DOWN   SCROLL_KEY_LEFT   &trans     &trans
 &trans   &trans   &trans   &trans   &trans   &trans                        &mkp MB4   &mkp MB1           SCROLL_KEY_UP     &mkp MB2          &mkp MB5   &trans
-&trans   &trans   &trans   &trans   &trans   &trans                        &trans     &trans             &trans            &trans            &trans     &trans
+&trans   &trans   &trans   &trans   &trans   &trans                        &trans     &kp LG(C)          &kp LG(V)         &trans            &trans     &trans
          &trans   &trans   &trans   &trans   &trans   &trans      &trans   &trans                                                            &trans   &trans
             >;
         };
