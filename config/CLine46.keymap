@@ -16,7 +16,7 @@
 
 // 次の値でスクロール量を調節する
 #define SCROLL_TAP_COUNT 4            // タップ
-#define SCROLL_HOLD_COUNT_PER_SEC 9   // ホールド
+#define SCROLL_HOLD_COUNT_PER_SEC 30  // ホールド
 
 #define SCROLL_TAP_COUNT_PER_SEC (1000 / (16 * SCROLL_TAP_INTERVAL) + 1)
 #define SCROLL_KEY_UP     &scroll_key MOVE_Y(SCROLL_HOLD_COUNT_PER_SEC) MOVE_Y(SCROLL_TAP_COUNT_PER_SEC)
@@ -90,13 +90,13 @@
     behaviors {
         // スクロールキー
         // - 200ms 以内に離すとタップ、それより長いとホールドになる
+        // - ホールドのスクロールは、押してから 200ms たった時点で始まる
 
         scroll_key: scroll_key {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "tap-preferred";
             tapping-term-ms = <200>;
-            hold-while-undecided;
             bindings = <&msc>, <&scroll_tap>;
         };
 
