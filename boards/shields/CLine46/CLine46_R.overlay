@@ -100,6 +100,6 @@
 // - カーソルの移動量は「元の移動量（cpi) × scale-multiplier ÷ scale-divisor」になる（例: 6 と 5 で 1.2倍）
 // - 注意: DYA Studio などで速さを変更したことがあると、キーボードに保存された値がここの値より優先される
 &mouse_runtime_input_processor {
-    scale-multiplier = <22>;
+    scale-multiplier = <20>;
     scale-divisor = <10>;
 };
