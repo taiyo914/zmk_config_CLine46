@@ -257,13 +257,14 @@
         //   U: 画面が右にスクロール  O: 画面が左にスクロール
         //      ※ Mac の「ナチュラルなスクロール」を有効にしていると、スクロール方向と移動する向きが逆になる
         //   J: 左クリック  L: 右クリック
+        //   ,: ←  .: →（YouTube などで動画を巻き戻す・早送りするため）
         //   J と K の同時押し: 戻る  K と L の同時押し: 進む（combos で設定）
         //   U と I の同時押し: タブを閉じる（Cmd+W）  I と O の同時押し: 新しいタブ（Cmd+T）（combos で設定）
         layer_4 {
             bindings = <
 &trans   &trans   &trans   &trans   &trans   &trans                        &trans           SCROLL_KEY_RIGHT   SCROLL_KEY_DOWN   SCROLL_KEY_LEFT   &trans      &trans
 &trans   &trans   &trans   &trans   &trans   &trans                        &trans           &mkp MB1           SCROLL_KEY_UP     &mkp MB2          &trans      &trans
-&trans   &trans   &trans   &trans   &trans   &trans                        &trans           &trans             &trans            &trans            &trans      &trans
+&trans   &trans   &trans   &trans   &trans   &trans                        &trans           &trans             &kp LEFT          &kp RIGHT         &trans      &trans
          &trans   &trans   &trans   &trans   &trans   &trans      &trans   &trans                                                                  &trans   &trans
             >;
         };
