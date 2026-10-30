@@ -209,15 +209,16 @@
         };
 
         // 数字と移動
-        //   右手: 数字（テンキーと同じ並び）と + -
+        //   右手: 数字（中段 H J K L - が 0〜4、上段 Y U I O P が 5〜9）
+        //         演算記号（N + / M - / , *）。. と / は文字入力レイヤーのまま
         //   左手: 矢印
         //   Q: カーソルの左の1単語を削除（Option+Backspace）  T: カーソルの右の1単語を削除（Option+Delete）
         //   右下の2キー: 画面の明るさ
         layer_1 {
             bindings = <
-&trans   &kp LA(BSPC)   &kp LA(LEFT)   &kp UP     &kp LA(RIGHT)   &kp LA(DEL)                          &none    &kp N7   &kp N8   &kp N9   &kp PLUS       &trans
-&trans   &kp LG(LEFT)   &kp LEFT       &kp DOWN   &kp RIGHT       &kp LG(RIGHT)                        &none    &kp N4   &kp N5   &kp N6   &kp MINUS      &trans
-&trans   &trans         &trans         &trans     &trans          &trans                               &kp N0   &kp N1   &kp N2   &kp N3   &trans         &trans
+&trans   &kp LA(BSPC)   &kp LA(LEFT)   &kp UP     &kp LA(RIGHT)   &kp LA(DEL)                          &kp N5     &kp N6      &kp N7      &kp N8   &kp N9   &trans
+&trans   &kp LG(LEFT)   &kp LEFT       &kp DOWN   &kp RIGHT       &kp LG(RIGHT)                        &kp N0     &kp N1      &kp N2      &kp N3   &kp N4   &trans
+&trans   &trans         &trans         &trans     &trans          &trans                               &kp PLUS   &kp MINUS   &kp ASTRK   &trans   &trans   &trans
          &trans         &trans         &trans     &trans          &trans          &trans      &trans   &trans                              &kp C_BRI_DN   &kp C_BRI_UP
             >;
         };
