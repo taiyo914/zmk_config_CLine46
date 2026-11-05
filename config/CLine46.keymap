@@ -86,17 +86,6 @@
                 <&macro_tap>,
                 <&macro_param_1to1 &msc MACRO_PLACEHOLDER>;
         };
-
-        // Caps Lock を 80ms 押して離す
-        // Mac は Caps Lock を短く押しただけだと反応しないことがあるので、少し長く押す（QMK の既定値と同じ 80ms）
-
-        caps_tap: caps_tap {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            wait-ms = <0>;
-            tap-ms = <80>;
-            bindings = <&macro_tap &kp CAPS>;
-        };
     };
 
     behaviors {
@@ -132,21 +121,15 @@
             mods = <(MOD_LSFT|MOD_RSFT)>;
         };
 
-        // Shift キー。押してから 200ms 以内にもう一度押すと Caps Lock を切り替える
-        // - 1回目を押したあと、別のキーを押すか 200ms たった時点で Shift を押す
+        // マウスレイヤーの Enter キー。単押しで Enter、押している間はスクロールレイヤー
+        // - 200ms 以内に離すとタップ。押している間に別のキーを押して離したときは、200ms たっていなくてもホールドになる
 
-        lshift_caps: lshift_caps {
-            compatible = "zmk,behavior-tap-dance";
-            #binding-cells = <0>;
+        enter_scroll: enter_scroll {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "balanced";
             tapping-term-ms = <200>;
-            bindings = <&kp LSHIFT>, <&caps_tap>;
-        };
-
-        rshift_caps: rshift_caps {
-            compatible = "zmk,behavior-tap-dance";
-            #binding-cells = <0>;
-            tapping-term-ms = <200>;
-            bindings = <&kp RSHIFT>, <&caps_tap>;
+            bindings = <&mo>, <&kp>;
         };
     };
 
@@ -198,12 +181,11 @@
         compatible = "zmk,keymap";
 
         // 文字入力
-        //   左右の Shift: 素早く2回押すと Caps Lock
         layer_0 {
             bindings = <
 &mt LALT TAB          &kp Q      &kp W       &kp E      &kp R            &kp T                                    &kp Y             &kp U   &kp I       &kp O     &kp P          &kp BSPC
 &ctrl_esc LCTRL ESC   &kp A       &kp S       &kp D      &kp F            &kp G                                    &kp H             &kp J   &kp K       &kp L     &kp MINUS      &kp RET
-&lshift_caps          &kp Z      &kp X       &kp C      &kp V            &kp B                                    &kp N             &kp M   &kp COMMA   &kp DOT   &kp SLASH      &rshift_caps
+&kp LSHIFT            &kp Z      &kp X       &kp C      &kp V            &kp B                                    &kp N             &kp M   &kp COMMA   &kp DOT   &kp SLASH      &kp RSHIFT
                       &kp ESC     &trans      &kp LALT   &mt LALT LANG2   &lt 1 SPACE   &mt LGUI LANG2  &mt RGUI LANG2   &lt 2 LANG1                                     &kp C_VOL_DN   &kp C_VOL_UP
             >;
         };
@@ -264,20 +246,26 @@
         //   ,: ←  .: →（YouTube などで動画を巻き戻す・早送りするため）
         //   J と K の同時押し: 戻る  K と L の同時押し: 進む（combos で設定）
         //   U と I の同時押し: タブを閉じる（Cmd+W）  I と O の同時押し: 新しいタブ（Cmd+T）（combos で設定）
+        //   Enter: 単押しで Enter、押している間スクロールレイヤー
         layer_4 {
             bindings = <
 &trans   &trans   &trans   &trans   &trans   &trans                        &trans           SCROLL_KEY_RIGHT   SCROLL_KEY_DOWN   SCROLL_KEY_LEFT   &trans      &trans
-&trans   &trans   &trans   &trans   &trans   &trans                        &trans           &mkp MB1           SCROLL_KEY_UP     &mkp MB2          &trans      &trans
+&trans   &trans   &trans   &trans   &trans   &trans                        &trans           &mkp MB1           SCROLL_KEY_UP     &mkp MB2          &trans      &enter_scroll 5 RET
 &trans   &trans   &trans   &trans   &trans   &trans                        &trans           &trans             &kp LEFT          &kp RIGHT         &trans      &trans
          &trans   &trans   &trans   &trans   &trans   &trans      &trans   &trans                                                                  &trans   &trans
             >;
         };
 
         // スクロール
+        //   入り方: マウスレイヤーで Enter を押し続ける
+        //   入っている間はボールでスクロールする
+        //   I: Cmd+↑  K: Cmd+↓（Karabiner でアプリごとのタブ切り替えに変えている）
+        //   J: コピー（Cmd+C）  U: ペースト（Cmd+V）
+        //   L: Shottr のスクリーンショット（Cmd+Shift+2）  O: 元に戻す（Cmd+Z）
         layer_5 {
             bindings = <
-&trans   &trans   &trans   &trans   &trans   &trans                        &trans   &trans   &trans   &trans   &trans   &trans
-&trans   &trans   &trans   &trans   &trans   &trans                        &trans   &trans   &trans   &trans   &trans   &trans
+&trans   &trans   &trans   &trans   &trans   &trans                        &trans   &kp LG(V)        &kp LG(UP)     &kp LG(Z)        &trans   &trans
+&trans   &trans   &trans   &trans   &trans   &trans                        &trans   &kp LG(C)        &kp LG(DOWN)   &kp LG(LS(N2))   &trans   &trans
 &trans   &trans   &trans   &trans   &trans   &trans                        &trans   &trans   &trans   &trans   &trans   &trans
          &trans   &trans   &trans   &trans   &trans   &trans      &trans   &trans                              &trans   &trans
             >;
