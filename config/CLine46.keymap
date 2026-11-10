@@ -112,6 +112,20 @@
             bindings = <&kp>, <&kp>;
         };
 
+        // 文字キーに修飾キーを持たせる設定（例: A を長押しで Ctrl）。単押しで文字、長押しで修飾キー
+        // - 200ms 以上押したとき、または押している間に別のキーを押して離したときに、修飾キーになる
+        // - 直前のキーを打ってから 150ms 以内に押したときは、文章を打っている途中とみなして必ず文字になる
+        // - 1回打ってから 200ms 以内にもう一度押して押し続けると、文字を連続で入力する
+        home_mod: home_mod {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <200>;
+            require-prior-idle-ms = <150>;
+            quick-tap-ms = <200>;
+            bindings = <&kp>, <&kp>;
+        };
+
         // Shift の有無で送る文字を変えるキー。Shift ありのときは Shift を外して送る
 
         semi_colon: semi_colon {
@@ -200,7 +214,7 @@
         layer_0 {
             bindings = <
 &mt LALT TAB          &kp Q      &kp W       &kp E      &kp R            &kp T                                    &kp Y             &kp U   &kp I       &kp O     &kp P          &kp BSPC
-&ctrl_esc LCTRL ESC   &kp A       &kp S       &kp D      &kp F            &kp G                                    &kp H             &kp J   &kp K       &kp L     &kp MINUS      &kp RET
+&ctrl_esc LCTRL ESC   &home_mod LCTRL A   &kp S       &kp D      &kp F            &kp G                                    &kp H             &kp J   &kp K       &kp L     &kp MINUS      &kp RET
 &kp LSHIFT            &kp Z      &kp X       &kp C      &kp V            &kp B                                    &kp N             &kp M   &kp COMMA   &kp DOT   &kp SLASH      &kp RSHIFT
                       &kp ESC     &trans      &kp LALT   &mt LALT LANG2   &lt 1 SPACE   &mt LGUI LANG2  &mt RGUI LANG2   &lt 2 LANG1                                     &kp C_VOL_DN   &kp C_VOL_UP
             >;
