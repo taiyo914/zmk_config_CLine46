@@ -121,10 +121,10 @@
             mods = <(MOD_LSFT|MOD_RSFT)>;
         };
 
-        // マウスレイヤーの Enter キー。単押しで Enter、押している間はスクロールレイヤー
+        // マウスレイヤーの - キー。単押しで -、押している間はスクロールレイヤー
         // - 200ms 以内に離すとタップ。押している間に別のキーを押して離したときは、200ms たっていなくてもホールドになる
 
-        enter_scroll: enter_scroll {
+        minus_scroll: minus_scroll {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "balanced";
@@ -246,18 +246,18 @@
         //   ,: ←  .: →（YouTube などで動画を巻き戻す・早送りするため）
         //   J と K の同時押し: 戻る  K と L の同時押し: 進む（combos で設定）
         //   U と I の同時押し: タブを閉じる（Cmd+W）  I と O の同時押し: 新しいタブ（Cmd+T）（combos で設定）
-        //   Enter: 単押しで Enter、押している間スクロールレイヤー
+        //   -: 単押しで -、押している間スクロールレイヤー
         layer_4 {
             bindings = <
 &trans   &trans   &trans   &trans   &trans   &trans                        &trans           SCROLL_KEY_RIGHT   SCROLL_KEY_DOWN   SCROLL_KEY_LEFT   &trans      &trans
-&trans   &trans   &trans   &trans   &trans   &trans                        &trans           &mkp MB1           SCROLL_KEY_UP     &mkp MB2          &trans      &enter_scroll 5 RET
+&trans   &trans   &trans   &trans   &trans   &trans                        &trans           &mkp MB1           SCROLL_KEY_UP     &mkp MB2          &minus_scroll 5 MINUS   &trans
 &trans   &trans   &trans   &trans   &trans   &trans                        &trans           &trans             &kp LEFT          &kp RIGHT         &trans      &trans
          &trans   &trans   &trans   &trans   &trans   &trans      &trans   &trans                                                                  &trans   &trans
             >;
         };
 
         // スクロール
-        //   入り方: マウスレイヤーで Enter を押し続ける
+        //   入り方: マウスレイヤーで - を押し続ける
         //   入っている間はボールでスクロールする
         //   I: Cmd+↑  K: Cmd+↓（Karabiner でアプリごとのタブ切り替えに変えている）
         //   J: コピー（Cmd+C）  U: ペースト（Cmd+V）
