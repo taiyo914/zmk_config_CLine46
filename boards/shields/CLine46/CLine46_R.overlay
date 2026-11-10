@@ -101,7 +101,11 @@
 // トラックボールのカーソルの速さ
 // - カーソルの移動量は「元の移動量（cpi) × scale-multiplier ÷ scale-divisor」になる（例: 6 と 5 で 1.2倍）
 // - 注意: DYA Studio などで速さを変更したことがあると、キーボードに保存された値がここの値より優先される
+// - 実績（macのデフォルトのマウスの速さ目盛り4のとき）
+//   - 付属のトラックボール → 1.05 倍くらいがちょうどいい
+//   - tomunekoさんのトラボ → 1.5 倍くらいがちょうどいい
+// - 雑に早く動くより精密に動かすほうが難しいから基本的にゆっくり使うときの使い心地に合わせたほうがいい気がする
 &mouse_runtime_input_processor {
-    scale-multiplier = <15>;
-    scale-divisor = <10>;
+    scale-multiplier = <105>;
+    scale-divisor = <100>;
 };
