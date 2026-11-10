@@ -175,6 +175,22 @@
             bindings = <&kp LG(T)>;
             layers = <4>;
         };
+
+        // マウスレイヤーで J と K と L を同時に押すと、Mac の範囲指定スクリーンショットをクリップボードにコピーする（Cmd+Ctrl+Shift+4）
+        combo_mac_screenshot {
+            timeout-ms = <50>;
+            key-positions = <19 20 21>;
+            bindings = <&kp LG(LC(LS(N4)))>;
+            layers = <4>;
+        };
+
+        // マウスレイヤーで U と I と O を同時に押すと、Shottr のスクリーンショットを撮る（Cmd+Shift+2）
+        combo_shottr_screenshot {
+            timeout-ms = <50>;
+            key-positions = <7 8 9>;
+            bindings = <&kp LG(LS(N2))>;
+            layers = <4>;
+        };
     };
 
     keymap {
@@ -246,6 +262,8 @@
         //   ,: ←  .: →（YouTube などで動画を巻き戻す・早送りするため）
         //   J と K の同時押し: 戻る  K と L の同時押し: 進む（combos で設定）
         //   U と I の同時押し: タブを閉じる（Cmd+W）  I と O の同時押し: 新しいタブ（Cmd+T）（combos で設定）
+        //   J と K と L の同時押し: Mac のスクリーンショット（Cmd+Ctrl+Shift+4）（combos で設定）
+        //   U と I と O の同時押し: Shottr のスクリーンショット（Cmd+Shift+2）（combos で設定）
         //   -: 単押しで -、押している間スクロールレイヤー
         layer_4 {
             bindings = <
@@ -260,12 +278,12 @@
         //   入り方: マウスレイヤーで - を押し続ける
         //   入っている間はボールでスクロールする
         //   I: Cmd+↑  K: Cmd+↓（Karabiner でアプリごとのタブ切り替えに変えている）
-        //   J: コピー（Cmd+C）  U: ペースト（Cmd+V）
-        //   L: Shottr のスクリーンショット（Cmd+Shift+2）  O: 元に戻す（Cmd+Z）
+        //   J: コピー（Cmd+C）  L: ペースト（Cmd+V）
+        //   O: 元に戻す（Cmd+Z）
         layer_5 {
             bindings = <
-&trans   &trans   &trans   &trans   &trans   &trans                        &trans   &kp LG(V)        &kp LG(UP)     &kp LG(Z)        &trans   &trans
-&trans   &trans   &trans   &trans   &trans   &trans                        &trans   &kp LG(C)        &kp LG(DOWN)   &kp LG(LS(N2))   &trans   &trans
+&trans   &trans   &trans   &trans   &trans   &trans                        &trans   &trans           &kp LG(UP)     &kp LG(Z)        &trans   &trans
+&trans   &trans   &trans   &trans   &trans   &trans                        &trans   &kp LG(C)        &kp LG(DOWN)   &kp LG(V)        &trans   &trans
 &trans   &trans   &trans   &trans   &trans   &trans                        &trans   &trans   &trans   &trans   &trans   &trans
          &trans   &trans   &trans   &trans   &trans   &trans      &trans   &trans                              &trans   &trans
             >;
