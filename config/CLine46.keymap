@@ -216,7 +216,7 @@
 &mt LALT TAB          &kp Q      &kp W       &kp E      &kp R            &kp T                                    &kp Y             &kp U   &kp I       &kp O     &kp P          &kp BSPC
 &ctrl_esc LCTRL ESC   &kp A      &kp S      &kp D      &kp F            &kp G                                    &kp H             &kp J   &kp K       &kp L     &kp MINUS      &kp RET
 &kp LSHIFT            &kp Z      &kp X       &kp C      &kp V            &kp B                                    &kp N             &kp M   &kp COMMA   &kp DOT   &kp SLASH      &kp RSHIFT
-                      &trans      &trans      &trans     &mt LALT LANG2   &lt 1 SPACE   &mt LGUI LANG2  &mt RGUI LANG2   &lt 2 LANG1                                     &kp C_VOL_DN   &kp C_VOL_UP
+                      &trans      &trans      &trans     &mt LALT LANG2   &lt 1 SPACE   &kp LGUI        &kp RGUI         &lt 2 LANG1                                     &kp C_VOL_DN   &kp C_VOL_UP
             >;
         };
 
