@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CLine46 キーマップ チートシート</title>
+<style>
+  :root {
+    --bg: #f6f7f9;
+    --card: #ffffff;
+    --text: #1f2328;
+    --muted: #6b7280;
+    --border: #d0d7de;
+    --held: #e11d48;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  header {
+    position: sticky; top: 0; z-index: 10;
+    background: #111827; color: #fff;
+    padding: 10px 24px;
+    display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center;
+  }
+  header h1 { font-size: 18px; margin: 0 12px 0 0; }
+  header a {
+    color: #e5e7eb; text-decoration: none; font-size: 14px;
+    padding: 2px 10px; border-radius: 999px; border: 1px solid #374151;
+  }
+  header a:hover { background: #374151; }
+  main { max-width: 1180px; margin: 0 auto; padding: 24px; }
+  section {
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 20px 24px; margin-bottom: 24px;
+    scroll-margin-top: 70px;
+  }
+  h2 { margin: 0 0 4px; font-size: 22px; }
+  h2 .num {
+    display: inline-block; background: #111827; color: #fff; border-radius: 6px;
+    font-size: 14px; padding: 0 8px; margin-right: 8px; vertical-align: middle;
+  }
+  h3 { font-size: 16px; margin: 20px 0 8px; }
+  .how {
+    background: #fff7ed; border-left: 4px solid #f97316;
+    padding: 8px 12px; border-radius: 6px; margin: 8px 0 16px;
+  }
+  .how b { color: #c2410c; }
+  ul { margin: 6px 0; padding-left: 22px; }
+  kbd {
+    font-family: inherit; font-size: 0.9em;
+    background: #f3f4f6; border: 1px solid #d1d5db; border-bottom-width: 2px;
+    border-radius: 4px; padding: 0 6px;
+  }
+
+  /* キーボードの図 */
+  .kb-wrap { overflow-x: auto; padding-bottom: 4px; }
+  .kb {
+    display: grid;
+    grid-template-columns: repeat(15, minmax(62px, 1fr));
+    grid-auto-rows: 74px;
+    gap: 5px;
+    min-width: 1000px;
+    position: relative;
+  }
+  .key {
+    border: 1px solid var(--border); border-radius: 8px;
+    padding: 4px 5px;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center; overflow: hidden;
+    box-shadow: 0 2px 0 rgba(0,0,0,0.08);
+  }
+  .key .tap { font-weight: 700; font-size: 15px; line-height: 1.2; }
+  .key .tap.long { font-size: 12px; }
+  .key .hold {
+    margin-top: 3px; font-size: 10.5px; line-height: 1.2;
+    background: rgba(0,0,0,0.07); border-radius: 4px; padding: 1px 4px;
+  }
+  /* white-space: 補足の文字に \n を入れたところで改行する */
+  .key .sub { font-size: 10px; color: #4b5563; line-height: 1.2; margin-top: 2px; white-space: pre-line; }
+  .key.trans { background: #fafafa; border-style: dashed; color: #b0b7c0; box-shadow: none; }
+  .key.trans .hold { background: transparent; }
+  .key.trans .tap { font-weight: 500; }
+  .key.none { background: #f3f4f6; color: #9ca3af; border-style: dashed; box-shadow: none; }
+  .key.held { outline: 3px solid var(--held); outline-offset: 1px; background: #ffe4e6; color: #881337; }
+  .key.held::after {
+    content: "押したまま"; font-size: 10px; font-weight: 700; color: #fff;
+    background: var(--held); border-radius: 4px; padding: 0 4px; margin-top: 3px;
+  }
+  .ball {
+    border-radius: 50%; border: 2px solid #9ca3af;
+    background: radial-gradient(circle at 35% 35%, #fef3c7, #f59e0b 70%, #b45309);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: #451a03;
+    aspect-ratio: 1; height: 100%; justify-self: center;
+  }
+  .half-label {
+    font-size: 12px; color: var(--muted); align-self: end; text-align: center;
+  }
+
+  /* 種類ごとの色 */
+  .c-letter { background: #ffffff; }
+  .c-mod    { background: #dbeafe; border-color: #93c5fd; }
+  .c-layer  { background: #ede9fe; border-color: #c4b5fd; }
+  .c-nav    { background: #dcfce7; border-color: #86efac; }
+  .c-num    { background: #ffedd5; border-color: #fdba74; }
+  .c-sym    { background: #ccfbf1; border-color: #5eead4; }
+  .c-mouse  { background: #fce7f3; border-color: #f9a8d4; }
+  .c-sys    { background: #fee2e2; border-color: #fca5a5; }
+  .c-media  { background: #e0e7ff; border-color: #a5b4fc; }
+  .c-edit   { background: #fef9c3; border-color: #fde047; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 10px 0 0; font-size: 13px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend i { width: 16px; height: 16px; border-radius: 4px; border: 1px solid var(--border); display: inline-block; }
+
+  /* 同時押し */
+  .combos { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; margin-top: 8px; }
+  .combo {
+    border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .combo .keys { white-space: nowrap; }
+  .combo .keys kbd { font-weight: 700; }
+  .combo .arrow { color: var(--muted); }
+
+  /* レイヤーの入り方の一覧 */
+  .map { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+  .map a {
+    display: block; text-decoration: none; color: inherit;
+    border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px;
+  }
+  .map a:hover { border-color: #6b7280; }
+  .map .name { font-weight: 700; }
+  .map .enter { font-size: 13px; color: var(--muted); }
+
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; vertical-align: top; }
+  th { background: #f3f4f6; }
+
+  @media print {
+    header { position: static; }
+    section { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>CLine46 キーマップ</h1>
+  <nav id="nav"></nav>
+</header>
+
+<main>
+  <section id="basics">
+    <h2><span class="num">0</span>はじめに</h2>
+    <p>このキーボードは、キーの数を少なくするために「レイヤー」という仕組みを使っています。
+      特定のキーを押している間だけ、ほかのキーの役割が別のものに切り替わります。キーから指を離すと元に戻ります。</p>
+
+    <h3>レイヤーの入り方</h3>
+    <div class="map" id="layer-map"></div>
+
+    <h3>図の見方</h3>
+    <ul>
+      <li>キーの大きい文字は、<b>短く押して離したとき</b> に入力されるものです。</li>
+      <li>下にある小さい枠の文字は、<b>長押ししたとき</b> の役割です。長押しとは、0.2秒以上押し続けるか、押したまま別のキーを打つことです。</li>
+      <li><span style="color:var(--held);font-weight:700">赤い枠</span> のキーは、そのレイヤーに入るために押したままにしておくキーです。</li>
+      <li>点線で薄く表示しているキーは、そのレイヤーでは役割が変わらず、文字入力レイヤーと同じものが入力されます。</li>
+      <li>キーボードは左右に分かれています。トラックボールは右手側にあります。</li>
+      <li>キーの名前は Mac の表記です。<kbd>⌘</kbd> は Command、<kbd>⌥</kbd> は Option、<kbd>⌃</kbd> は Control です。</li>
+    </ul>
+    <div class="legend" id="legend"></div>
+  </section>
+
+  <div id="layers"></div>
+
+  <section id="tips">
+    <h2><span class="num">!</span>知っておくと便利なこと</h2>
+    <table>
+      <tr><th style="width:32%">こんなとき</th><th>こうする</th></tr>
+      <tr><td>キーボードが反応しない・別の PC につながっている</td><td>設定レイヤーで右手上段の <b>BT 0〜4</b> を押して、つなぎたい PC の番号に切り替える。</td></tr>
+      <tr><td>新しい PC とつなぎたい</td><td>設定レイヤーで、まだ使っていない番号の <b>BT</b> キーを押し、PC の Bluetooth 設定からペアリングする。その番号に古い PC が登録されているときは、先に右下の <b>今の接続先を削除</b> を押す。</td></tr>
+      <tr><td>電池がどれくらい残っているか知りたい</td><td>設定レイヤーで <b>B</b> の位置のキーを押す。LED の色で残量がわかる。</td></tr>
+      <tr><td>ファームウェアを書き込みたい</td><td>設定レイヤーで、書き込みたい側の <b>Shift の位置</b> のキーを押す。PC に「XIAO-SENSE」というドライブが表示されたら、ファイルをコピーする（<kbd>make build-flash-right</kbd> などを使うと自動でコピーされる）。</td></tr>
+      <tr><td>マウスレイヤーから早く抜けたい</td><td>ボールを動かさずに10秒待つと、自動で文字入力レイヤーに戻る。</td></tr>
+      <tr><td>A や J などの文字キーを押し続けて同じ文字を連続入力したい</td><td>普通に押し続ける。<kbd>Tab</kbd> や <kbd>Space</kbd> など長押しで役割が変わるキーは、1回打ってから0.2秒以内にもう一度押して押し続けると、連続で入力される。</td></tr>
+    </table>
+  </section>
+</main>
+
+<script>
+// 各キーの位置（physical layout の x, y を 100 で割った値）。番号は keymap の並び順
+const POSITIONS = [
+  ...[0,1,2,3,4,5,9,10,11,12,13,14].map(x => [x, 0]),
+  ...[0,1,2,3,4,5,9,10,11,12,13,14].map(x => [x, 1]),
+  ...[0,1,2,3,4,5,9,10,11,12,13,14].map(x => [x, 2]),
+  ...[1,2,3,4,5,6,8,9,12,13].map(x => [x, 3]),
+];
+
+const CATEGORIES = {
+  letter: "文字",
+  mod:    "修飾キー（⌘ ⌥ ⌃ Shift）",
+  layer:  "レイヤー切り替え",
+  nav:    "カーソル移動",
+  num:    "数字",
+  sym:    "記号",
+  edit:   "編集（削除・コピーなど）",
+  mouse:  "マウス・スクロール",
+  media:  "音量・画面の明るさ",
+  sys:    "Bluetooth・本体の設定",
+};
+
+// キーを作る。t: 短く押したとき、h: 長押ししたとき、c: 種類、s: 補足
+const k = (t, c = "letter", h = "", s = "") => ({ t, c, h, s });
+const _ = null; // 文字入力レイヤーと同じ
+
+const BASE = [
+  k("Tab","mod","⌥ Option"), k("Q"),k("W"),k("E"),k("R"),k("T"),
+  k("Y"),k("U"),k("I"),k("O"),k("P"), k("⌫","edit","","Backspace"),
+
+  k("Esc","mod","⌃ Control"), k("A"),k("S"),k("D"),k("F"),k("G"),
+  k("H"),k("J"),k("K"),k("L"), k("-","sym"), k("⏎","edit","","Enter"),
+
+  k("Shift","mod"), k("Z"),k("X"),k("C"),k("V"),k("B"),
+  k("N"),k("M"),k(",","sym"),k(".","sym"),k("/","sym"), k("Shift","mod"),
+
+  k("なし","none"), k("なし","none"), k("なし","none"),
+  k("英数","mod","⌥ Option"), k("Space","layer","数字と移動"), k("⌘","mod","","Command"),
+  k("⌘","mod","","Command"), k("かな","layer","記号"),
+  k("音量 −","media"), k("音量 ＋","media"),
+];
+
+const LAYERS = [
+  {
+    id: "layer0", name: "文字入力", short: "文字入力",
+    enter: "何も押していないときの状態",
+    how: "何もしなくてもこのレイヤーです。ほかのレイヤーのキーから指を離すと、ここに戻ります。",
+    held: [],
+    keys: BASE,
+    notes: [
+      "<kbd>Space</kbd> を長押しすると「数字と移動」、<kbd>かな</kbd> を長押しすると「記号」のレイヤーに切り替わります。",
+      "<kbd>Space</kbd> とその右隣の <kbd>⌘</kbd> を同時に押したままにすると「設定」のレイヤーに切り替わります。",
+      "<kbd>Esc</kbd> は、押したまま別のキーを打つとすぐに <kbd>⌃ Control</kbd> として働きます。",
+    ],
+  },
+  {
+    id: "layer1", name: "数字と移動", short: "数字と移動",
+    enter: "左親指の Space を押したまま",
+    how: "左手の親指で <b>Space を押したまま</b>、ほかのキーを押します。",
+    held: [40],
+    keys: [
+      _, k("単語削除 ←","edit","","⌥ ⌫"), k("⌥ ←","nav","","1単語左へ"), k("↑","nav"), k("⌥ →","nav","","1単語右へ"), k("単語削除 →","edit","","⌥ Delete"),
+      k("5","num"),k("6","num"),k("7","num"),k("8","num"),k("9","num"), _,
+
+      _, k("⌘ ←","nav","","行の先頭へ"), k("←","nav"), k("↓","nav"), k("→","nav"), k("⌘ →","nav","","行の末尾へ"),
+      k("0","num"),k("1","num"),k("2","num"),k("3","num"),k("4","num"), _,
+
+      _, _,_,_,_,_,
+      k("+","sym"), k("−","sym"), k("*","sym"), _,_,_,
+
+      _,_,_,_,_,_, _,_, k("明るさ −","media"), k("明るさ ＋","media"),
+    ],
+    notes: [
+      "数字は、中段の <kbd>H J K L -</kbd> が 0〜4、上段の <kbd>Y U I O P</kbd> が 5〜9 です。",
+      "左手は矢印キーです。<kbd>E S D F</kbd> が ↑ ← ↓ → になります。",
+      "<kbd>.</kbd> と <kbd>/</kbd> は文字入力レイヤーと同じなので、計算式もこのレイヤーのまま打てます。",
+    ],
+  },
+  {
+    id: "layer2", name: "記号", short: "記号",
+    enter: "右親指の かな を押したまま",
+    how: "右手の親指で <b>かな を押したまま</b>、ほかのキーを押します。",
+    held: [43],
+    keys: [
+      _, k("'","sym","","Q: quote"), k('"',"sym","","W: w-quote"), k("=","sym","","E: equal"), k("^","sym","","R: raised"), k("~","sym","","T: tilde"),
+      _, k("(","sym"), k(")","sym"), _, k("+","sym","","P: plus"), _,
+
+      _, k("@","sym","","A: at"), k("*","sym","","S: star"), k("$","sym","","D: dollar"), _, k("`","sym","","G: grave"),
+      k("#","sym","","H: hash"), k("[","sym"), k("]","sym"), _,_,_,
+
+      _, _, k("!","sym","","X: eXclamation"), k(":","sym","","Shift で ;\nC: colon"), k("|","sym","","V: vertical"), k("\\","sym","","B: backslash"),
+      k("&","sym","","N: 'n (and)"), k("%","sym","","M: mod"), _,_,_,_,
+
+      _,_,_,_,_,_, _,_, _,_,
+    ],
+    notes: [
+      "記号の位置は、英語の呼び名の頭文字で覚えられるようにしています（例: <kbd>A</kbd> の位置が <b>@</b> = <b>a</b>t、<kbd>D</kbd> の位置が <b>$</b> = <b>d</b>ollar）。",
+      "<kbd>C</kbd> の位置は、そのまま押すと <b>:</b>、Shift と一緒に押すと <b>;</b> になります。",
+      "かっこは右手の <kbd>U I</kbd> が <b>( )</b>、<kbd>J K</kbd> が <b>[ ]</b> です。",
+    ],
+  },
+  {
+    id: "layer3", name: "設定", short: "設定",
+    enter: "左親指の Space と ⌘ を同時に押したまま",
+    how: "左手の親指で <b>Space とその右隣の ⌘ を同時に押したまま</b>、ほかのキーを押します。",
+    held: [40, 41],
+    keys: [
+      _,_,_,_,_,_,
+      k("BT 0","sys","","接続先を切替"), k("BT 1","sys","","接続先を切替"), k("BT 2","sys","","接続先を切替"), k("BT 3","sys","","接続先を切替"), k("BT 4","sys","","接続先を切替"), _,
+
+      _,_,_,_,_,_,
+      k("BT 0 切断","sys"), k("BT 1 切断","sys"), k("BT 2 切断","sys"), k("BT 3 切断","sys"), k("BT 4 切断","sys"), _,
+
+      k("書き込み待ち","sys","","左手側"), _, _, k("接続状況","sys","","LED で表示"), _, k("電池残量","sys","","LED で表示"),
+      _,_,_,_,_, k("書き込み待ち","sys","","右手側"),
+
+      _,_,_,_,_,_,
+      _, k("Studio 解除","sys","","ZMK Studio"),
+      k("今の接続先を削除","sys","","ペアリング"), k("全部の接続先を削除","sys","","ペアリング"),
+    ],
+    notes: [
+      "<b>BT 0〜4</b>: Bluetooth でつなぐ PC を切り替えます。5台まで登録できます。",
+      "<b>BT 切断</b>: その番号の PC との接続を切ります。",
+      "<b>接続状況 / 電池残量</b>: キーボードの LED の色で、Bluetooth の接続状況と電池の残量を表示します。",
+      "<b>書き込み待ち</b>: 押した側のキーボードを、ファームウェアを書き込める状態にします。リセットボタンをすばやく2回押すのと同じです。",
+      "<b>Studio 解除</b>: ZMK Studio（ブラウザからキーマップを変更するツール）で設定を変更できるようにします。",
+      "<b>今の接続先を削除 / 全部の接続先を削除</b>: Bluetooth のペアリング情報を消します。全部消すと、すべての PC とペアリングし直す必要があります。",
+    ],
+  },
+  {
+    id: "layer4", name: "マウス", short: "マウス",
+    enter: "トラックボールを動かすと自動で入る",
+    how: "<b>トラックボールを動かすと自動で</b> このレイヤーに入ります。ボールを10秒動かさないと、自動で文字入力レイヤーに戻ります。",
+    held: [],
+    keys: [
+      _,_,_,_,_,_,
+      _, k("右へ","mouse","","スクロール"), k("下へ","mouse","","スクロール"), k("左へ","mouse","","スクロール"), _, _,
+
+      _,_,_,_,_,_,
+      _, k("左クリック","mouse"), k("上へ","mouse","","スクロール"), k("右クリック","mouse"), k("-","layer","スクロール"), _,
+
+      _,_,_,_,_,_,
+      _, _, k("←","nav","","動画の巻き戻し"), k("→","nav","","動画の早送り"), _, _,
+
+      _,_,_,_,_,_, _,_, _,_,
+    ],
+    combos: [
+      [["J","K"], "戻る（ブラウザの前のページ）"],
+      [["K","L"], "進む（ブラウザの次のページ）"],
+      [["U","I"], "タブを閉じる（⌘ W）"],
+      [["I","O"], "新しいタブを開く（⌘ T）"],
+      [["J","K","L"], "範囲を選んでスクリーンショットを撮り、クリップボードにコピー（⌘ ⌃ Shift 4）"],
+      [["U","I","O"], "Shottr でスクリーンショットを撮る（⌘ Shift 2）"],
+    ],
+    notes: [
+      "スクロールのキーは、短く押すと少しだけ、押し続けると押している間ずっとスクロールします。",
+      "Mac の「ナチュラルなスクロール」を有効にしていると、画面が動く向きが図と逆になります。",
+      "<kbd>-</kbd> は、短く押すと <b>-</b> を入力し、押したままにすると「スクロール」レイヤーに入ります。",
+      "左手のキーは文字入力レイヤーと同じなので、マウスレイヤーのままでも左手で文字を打てます。",
+    ],
+  },
+  {
+    id: "layer5", name: "スクロール", short: "スクロール",
+    enter: "マウスレイヤーで - を押したまま",
+    how: "マウスレイヤーに入っている状態で、右手の <b>- を押したまま</b> にします。押している間は、<b>トラックボールを動かすと画面がスクロール</b> します。",
+    held: [22],
+    keys: [
+      _,_,_,_,_,_,
+      _, _, k("⌘ ↑","nav","","Karabiner でタブ切り替え"), k("元に戻す","edit","","⌘ Z"), _, _,
+
+      _,_,_,_,_,_,
+      _, k("コピー","edit","","⌘ C"), k("⌘ ↓","nav","","Karabiner でタブ切り替え"), k("ペースト","edit","","⌘ V"), _, _,
+
+      _,_,_,_,_,_, _,_,_,_,_,_,
+      _,_,_,_,_,_, _,_, _,_,
+    ],
+    notes: [
+      "トラックボールを転がすと、マウスカーソルは動かずに画面がスクロールします。",
+      "<kbd>I</kbd> と <kbd>K</kbd> の <b>⌘ ↑ / ⌘ ↓</b> は、Karabiner-Elements の設定で、アプリごとのタブ切り替えに変えています。",
+    ],
+  },
+];
+
+// キーを1つ描く
+function renderKey(key, index, layer, isBase) {
+  const el = document.createElement("div");
+  const [x, y] = POSITIONS[index];
+  el.style.gridColumn = x + 1;
+  el.style.gridRow = y + 1;
+
+  const isTrans = key === null;
+  const shown = isTrans ? BASE[index] : key;
+  const classes = ["key"];
+  if (shown.c === "none") classes.push("none");
+  else if (isTrans && !isBase) classes.push("trans");
+  else classes.push("c-" + shown.c);
+  if (layer.held.includes(index)) classes.push("held");
+  el.className = classes.join(" ");
+
+  const tap = document.createElement("span");
+  tap.className = "tap" + (shown.t.length > 4 ? " long" : "");
+  tap.textContent = shown.t;
+  el.appendChild(tap);
+
+  if (shown.h && !layer.held.includes(index)) {
+    const hold = document.createElement("span");
+    hold.className = "hold";
+    hold.textContent = "長押し: " + shown.h;
+    el.appendChild(hold);
+  }
+  if (shown.s && !(isTrans && !isBase)) {
+    const sub = document.createElement("span");
+    sub.className = "sub";
+    sub.textContent = shown.s;
+    el.appendChild(sub);
+  }
+  return el;
+}
+
+// レイヤーの図と説明をまとめて1つのセクションにする
+function renderLayer(layer, number) {
+  const section = document.createElement("section");
+  section.id = layer.id;
+
+  const kb = document.createElement("div");
+  kb.className = "kb";
+  layer.keys.forEach((key, i) => kb.appendChild(renderKey(key, i, layer, number === 0)));
+
+  const ball = document.createElement("div");
+  ball.className = "ball";
+  ball.style.gridColumn = "11 / span 2";
+  ball.style.gridRow = "4";
+  ball.textContent = "ボール";
+  kb.appendChild(ball);
+
+  const combosHtml = layer.combos ? `
+    <h3>同時押し（このレイヤーで、並んだキーを同時に押す）</h3>
+    <div class="combos">
+      ${layer.combos.map(([keys, what]) => `
+        <div class="combo">
+          <span class="keys">${keys.map(x => `<kbd>${x}</kbd>`).join(" + ")}</span>
+          <span class="arrow">→</span>
+          <span>${what}</span>
+        </div>`).join("")}
+    </div>` : "";
+
+  section.innerHTML = `
+    <h2><span class="num">${number}</span>${layer.name}</h2>
+    <div class="how">入り方: ${layer.how}</div>
+    <div class="kb-wrap"></div>
+    ${combosHtml}
+    <h3>ポイント</h3>
+    <ul>${layer.notes.map(n => `<li>${n}</li>`).join("")}</ul>
+  `;
+  section.querySelector(".kb-wrap").appendChild(kb);
+  return section;
+}
+
+// ページ上部のメニュー、レイヤーの入り方の一覧、色の説明、各レイヤーの図を描く
+function renderPage() {
+  const nav = document.getElementById("nav");
+  const map = document.getElementById("layer-map");
+  const layers = document.getElementById("layers");
+
+  nav.innerHTML = `<a href="#basics">はじめに</a>` +
+    LAYERS.map((l, i) => `<a href="#${l.id}">${i} ${l.short}</a>`).join("") +
+    `<a href="#tips">便利なこと</a>`;
+
+  map.innerHTML = LAYERS.map((l, i) => `
+    <a href="#${l.id}">
+      <div class="name">${i}. ${l.name}</div>
+      <div class="enter">${l.enter}</div>
+    </a>`).join("");
+
+  document.getElementById("legend").innerHTML = Object.entries(CATEGORIES)
+    .map(([c, label]) => `<span><i class="c-${c}"></i>${label}</span>`).join("");
+
+  LAYERS.forEach((l, i) => layers.appendChild(renderLayer(l, i)));
+}
+
+renderPage();
+</script>
+</body>
+</html>
